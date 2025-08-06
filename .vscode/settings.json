@@ -1,0 +1,14 @@
+{
+  "editor.fontSize": 15,
+  "editor.lineHeight": 1.4,
+  "editor.rulers": [
+    100,
+    120
+  ],
+  "workbench.startupEditor": "newUntitledFile",
+  "editor.fontFamily": "JetBrains Mono", //https://www.jetbrains.com/pt-br/lp/mono/
+  "editor.renderLineHighlight": "gutter",
+  "editor.fontLigatures": true,
+  "explorer.compactFolders": false,
+  "editor.semanticHighlighting.enabled": false,
+}
