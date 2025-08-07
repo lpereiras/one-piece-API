@@ -3,7 +3,7 @@ name = "one-piece-api"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "Lucas Pereria",email = "lpereira.qa@gmail.com"}
+    {name = "Lucas Pereira",email = "lpereira.qa@gmail.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.13, <4.0"
@@ -34,16 +34,17 @@ preview = true
 quote-style = 'single'
 
 [tool.pytest.ini_options]
-pythonpath = "."
+pythonpath = "src"
 addopts = '-p no:warnings'
 
 [tool.taskipy.tasks]
 dev = 'poetry run fastapi dev src/one_piece_api/app.py'
-lint = 'ruff check .'
+lint = 'ruff check'
 format = 'ruff format .'
-test = 'pytest -x --cov=src/one_piece_api'
-post_test = 'coverage html'
 coverage = 'coverage html'
+pre_test = 'task lint'
+test = 'pytest -s -x --cov=src/one_piece_api -vv'
+post_test = 'coverage html'
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
