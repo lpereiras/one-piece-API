@@ -4,5 +4,5 @@ app = FastAPI(version='v0.1.0')
 
 
 @app.get('/')
-def testing_API():
-    return {'version:', app.version}
+def version_API():
+    return {'version': 'v0.1.0'}
