@@ -27,10 +27,11 @@ extend-exclude = ['migrations']
 
 [tool.ruff.lint]
 preview = true
-select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+select = ['I', 'E', 'W', 'PL', 'PT']
 
 [tool.ruff.format]
-preview = true
+indent-style = "space"
+preview = false
 quote-style = 'single'
 
 [tool.pytest.ini_options]
@@ -40,7 +41,7 @@ addopts = '-p no:warnings'
 [tool.taskipy.tasks]
 dev = 'poetry run fastapi dev src/one_piece_api/app.py'
 lint = 'ruff check'
-format = 'ruff format .'
+format = 'ruff format'
 coverage = 'coverage html'
 pre_test = 'task lint'
 test = 'pytest -s -x --cov=src/one_piece_api -vv'
@@ -48,4 +49,4 @@ post_test = 'coverage html'
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+build-backend = "poetry.core.masonry.api"                           
