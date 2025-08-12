@@ -10,4 +10,4 @@ def test_API_version_validate_version():
 
     response = client.get('/')
     assert response.status_code == HTTPStatus.OK
-    assert response.json() == {'version': 'v0.1.0'}
+    assert response.json() == {'version': 'v0.0.1'}
