@@ -13,5 +13,5 @@ def test_create_user(client):
     assert response.status_code == HTTPStatus.CREATED
     assert response.json() == {
         'username': 'teste_username field',
-        'message': 'Usuário registrado com sucesso!',
+        'message': 'User successfully registered!',
     }

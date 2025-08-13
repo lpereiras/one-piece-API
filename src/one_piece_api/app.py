@@ -9,7 +9,7 @@ app = FastAPI(version='v0.0.1')
 
 
 # Retorna a versão atual da API
-@app.get('/', status_code=200, response_model=Version)
+@app.get('/one-piece-api/get-version', status_code=200, response_model=Version)
 def API_version():
     return {'version': app.version}
 
