@@ -8,7 +8,8 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.13, <4.0"
 dependencies = [
-    "fastapi[standard] (>=0.116.1,<0.117.0)"
+    "fastapi[standard] (>=0.116.1,<0.117.0)",
+    "sqlalchemy (>=2.0.43,<3.0.0)"
 ]
 
 [tool.poetry]
@@ -41,7 +42,7 @@ addopts = '-p no:warnings'
 [tool.taskipy.tasks]
 dev = 'poetry run fastapi dev src/one_piece_api/app.py'
 lint = 'ruff check'
-format = 'ruff format'
+format = 'ruff check --fix'
 coverage = 'coverage html'
 pre_test = 'task lint'
 test = 'pytest -s -x --cov=src/one_piece_api -vv'
