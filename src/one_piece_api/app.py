@@ -2,8 +2,8 @@ from http import HTTPStatus
 
 from fastapi import FastAPI
 
-from one_piece_api.schemas.schema_API_version import Version
-from one_piece_api.schemas.schema_user import UserCreated, UserSchema
+from one_piece_api.schemas.API_version_schema import Version
+from one_piece_api.schemas.user_schema import UserCreated, UserSchema
 
 app = FastAPI(version='v0.0.1')
 
