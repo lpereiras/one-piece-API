@@ -1,5 +1,3 @@
-# import uuid
-
 from pydantic import BaseModel, EmailStr
 
 
@@ -10,12 +8,9 @@ class UserSchema(BaseModel):
 
 
 class UserCreated(BaseModel):
-    # user_id: uuid.uuid4()
+    id: int
     username: str
-    message: str
-    message = 'User successfully registered!'
 
 
 class UpdateUser(UserSchema):
     message: str
-    message = 'User successfully updated!'

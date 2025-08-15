@@ -1,7 +1,11 @@
 from http import HTTPStatus
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
+from one_piece_api.models.user_model import User
+from sqlalchemy import create_engine, select
+from sqlalchemy.orm import Session
+from settings.settings import Settings
 from one_piece_api.schemas.API_version_schema import Version
 from one_piece_api.schemas.user_schema import UserCreated, UserSchema
 
@@ -21,4 +25,36 @@ def API_version():
     response_model=UserCreated,
 )
 def create_user(user: UserSchema):
-    return user
+    engine = create_engine(Settings().DATABASE_URL)
+
+    with Session(engine) as session:
+        db_user = session.scalar(
+            select(User).where(
+                (User.username == user.username) | (User.email == user.email)
+            )
+        )
+    if db_user:
+        if db_user.username == user.username:
+            raise HTTPException(
+                status_code=HTTPStatus.CONFLICT,
+                detail='That username has already been claimed by another pirate.',
+            )
+        elif db_user.email == user.email:
+            raise HTTPException(
+                status_code=HTTPStatus.CONFLICT,
+                detail='This email is already taken.',
+            )
+        elif db_user.username is None:
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_ACCEPTABLE,
+                detail="You cant't go on a journey at these seas without a username.",
+            )
+    db_user = User(
+        username=user.username, email=user.email, password=user.password
+    )
+
+    session.add(db_user)
+    session.commit()
+    session.refresh(db_user)
+
+    return db_user
