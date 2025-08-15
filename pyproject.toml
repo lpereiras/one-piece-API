@@ -25,7 +25,7 @@ pytest-cov = "^6.2.1"
 taskipy = "^1.14.1"
 
 [tool.ruff]
-line-length = 79
+line-length = 100
 extend-exclude = ['migrations']
 
 [tool.ruff.lint]
@@ -38,7 +38,7 @@ preview = false
 quote-style = 'single'
 
 [tool.pytest.ini_options]
-pythonpath = "src"
+pythonpath = "src/"
 addopts = '-p no:warnings'
 
 [tool.taskipy.tasks]

@@ -4,4 +4,4 @@ node_modules
 __pycache__
 htmlcov
 .coverage
-.env
+database.db
