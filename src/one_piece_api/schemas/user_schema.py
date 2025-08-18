@@ -11,7 +11,3 @@ class UserCreated(BaseModel):
     id: int
     username: str
     message: str = 'User successfully registered!'
-
-
-class UpdateUser(UserSchema):
-    message: str

@@ -13,19 +13,19 @@ app = FastAPI(version='v0.0.1')
 
 
 # Retorna a versão atual da API
-@app.get('/one-piece-api/get-version', status_code=200, response_model=Version)
+@app.get('/version', status_code=200, response_model=Version)
 def API_version():
     return {'version': app.version}
 
 
 # Realiza o cadastro de um novo usuário
 @app.post(
-    '/one-piece-api/sign-up',
+    '/users',
     status_code=201,
     response_model=UserCreated,
 )
 def create_user(user: UserSchema):
-    engine = create_engine(Settings().DATABASE_URL, echo=True)
+    engine = create_engine(Settings().DATABASE_URL)
 
     with Session(engine) as session:
         db_user = session.scalar(

@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 def test_create_user(client):
     response = client.post(
-        '/one-piece-api/sign-up',
+        '/users',
         json={
             'username': 'teste_username field',
             'email': 'teste_email.field@com.br',

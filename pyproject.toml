@@ -47,7 +47,7 @@ lint = 'ruff check'
 format = 'ruff format'
 coverage = 'coverage html'
 pre_test = 'task lint'
-test = 'pytest -s -x --cov=src/one_piece_api -vv'
+test = 'pytest -s -x --cov=src/one_piece_api -v'
 post_test = 'coverage html'
 
 [build-system]
