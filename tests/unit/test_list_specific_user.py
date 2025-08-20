@@ -21,15 +21,3 @@ def test_list_users_invalid_search(client):
         'There is nothing to see here. Or are you looking for '
         'someone from the Void Century?'
     }
-
-
-# def test_list_users_invalid_id(client):
-#     user_id = 0
-#     response = client.get(f'/users/{user_id}')
-
-#     assert response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
-#     assert response.json() == {
-#         'detail':
-#         'There is nothing to see here. Or are you looking for '
-#         'someone from the Void Century?'
-#     }

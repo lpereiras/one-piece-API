@@ -59,7 +59,7 @@ def list_users(
 
     if not db_users:
         raise HTTPException(
-            status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
+            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
             detail='There is nothing to see here. Or are you looking for '
             'someone from the Void Century?',
         )

@@ -23,7 +23,6 @@ def test_create_user(client):
 
 
 def test_create_user_with_existing_username(client):
-    # test_user_schema = UserSchema.model_validate(test_user).model_dump()
     response = client.post(
         '/users/',
         json={
