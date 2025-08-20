@@ -59,7 +59,7 @@ def list_users(
 
     if not db_users:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND,
+            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
             detail='There is nothing to see here. Or are you looking for '
             'someone from the Void Century?',
         )
@@ -77,7 +77,7 @@ def list_specific_user(
 
     if not db_user:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND,
+            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
             detail='There is nothing to see here. Or are you looking for '
             'someone from the Void Century?',
         )
