@@ -34,7 +34,10 @@ jobs:
     needs: [build]
     steps:
       - name: Lint with ruff
-        run: poetry run ruff format .
+      - uses: astral-sh/ruff-action@v3
+      - run: ruff check --fix
+      - run: ruff format
+
 
   unit_tests:
     runs-on: ubuntu-latest
