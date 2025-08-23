@@ -22,7 +22,7 @@ jobs:
           python-version: "3.13"
           cache: "poetry"
 
-      - name: Install dependencies
+      - name: Install project dependencies
         run: |
           pipx install poetry --upgrade poetry
           poetry install -r poetry.lock
