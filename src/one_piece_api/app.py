@@ -9,10 +9,7 @@ from one_piece_api.models.user_model import User
 from one_piece_api.schemas.API_version_schema import Version
 from one_piece_api.schemas.user_schema import UserCreated, UserList, UserPublic, UserSchema
 
-app = FastAPI(
-    version='v0.0.2',
-    title='One Piece API'
-    )
+app = FastAPI(version='v0.0.2', title='One Piece API')
 
 
 # Retorna a versão atual da API
