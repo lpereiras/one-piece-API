@@ -73,7 +73,7 @@ def list_specific_user(
     if not db_user:
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND,
-            detail='There is nothing to see here. Or are you looking for '
+            detail='There is nothing to see here. Or are you searching for '
             'someone from the Void Century?',
         )
     else:
@@ -91,9 +91,9 @@ def delete_user(
     if not db_user:
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND,
-            detail='The one that you chasing is no longer between us.',
+            detail='The one you are chasing is no longer among us.',
         )
     else:
         session.delete(db_user)
         session.commit()
-    return {'message': "I hope you're happy with the bounty. "}
+    return {'message': "I hope you're satisfied with the bounty."}
