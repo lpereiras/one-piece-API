@@ -15,7 +15,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./one-piece-API
+        working-directory: one-piece-API
 
     steps:
       - name: Checkout code
