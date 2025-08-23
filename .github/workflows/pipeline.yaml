@@ -6,7 +6,7 @@ on:
       - main
 defaults:
   run:
-    working-directory: /home/runner/work/one-piece-API/
+    working-directory: /home/runner/work/one-piece-API/one_piece_api
 
 permissions:
   contents: read
