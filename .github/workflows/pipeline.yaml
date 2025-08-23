@@ -11,11 +11,15 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./one-piece-API
 
     steps:
       - uses: actions/checkout@v4
       - name: Checkout code
-        working-directory: ./one-piece-API
 
       - name: Set up Python 3.13
         uses: actions/setup-python@v5
