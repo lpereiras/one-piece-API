@@ -13,8 +13,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
       - name: Checkout code
-        uses: actions/checkout@v4
+        working-directory: ./one-piece-API
 
       - name: Set up Python 3.13
         uses: actions/setup-python@v5
