@@ -27,9 +27,7 @@ jobs:
         with:
           python-version: "3.13"
           cache: "poetry"
-      - run: |
-          pipx install poetry
-          poetry install poetry.lock
+      - run: poetry install poetry.lock
 
   lint:
     runs-on: ubuntu-latest
