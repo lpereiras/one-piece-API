@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Install dependencies
+      - name: Install project dependencies
         run: pipx install poetry
       - uses: actions/setup-python@v5
         with:
