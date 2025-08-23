@@ -1,0 +1,50 @@
+name: OPA Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: "poetry"
+
+      - name: Install project dependencies
+        run: |
+          pipx install poetry --upgrade poetry
+          poetry install -r poetry.lock
+
+      - name: Lint with ruff
+        run: |
+          poetry run ruff format .
+
+  unit_tests:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Run unit tests
+        run: |
+          poetry run pytest -s -x -E --cov=src/one_piece_api
+        working-directory: ./tests/unit
+
+  integration_tests:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Run integration tests
+        run: |
+          poetry run pytest -s -x -E --cov=src/one_piece_api
+        working-directory: ./tests/integration
