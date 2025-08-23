@@ -34,7 +34,7 @@ jobs:
     needs: [build]
     steps:
       - name: Lint with ruff
-      - uses: astral-sh/ruff-action@v3
+        uses: astral-sh/ruff-action@v3
       - run: |
           ruff check --fix
           ruff format
