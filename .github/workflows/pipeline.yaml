@@ -45,7 +45,7 @@ jobs:
     steps:
       - name: Run unit tests
         run: poetry run pytest -s -x -E --cov=src/one_piece_api
-        working-directory: /home/runner/work/one-piece-API/tests/unit
+        working-directory: /home/runner/work/one-piece-api/tests/unit
 
   integration_tests:
     runs-on: ubuntu-latest
@@ -53,4 +53,4 @@ jobs:
     steps:
       - name: Run integration tests
         run: poetry run pytest -s -x -E --cov=src/one_piece_api
-        working-directory: /home/runner/work/one-piece-API/tests/integration
+        working-directory: /home/runner/work/one-piece-api/tests/unit
