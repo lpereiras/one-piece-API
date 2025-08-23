@@ -33,7 +33,7 @@ jobs:
 
   unit_tests:
     runs-on: ubuntu-latest
-    needs: [build, lint]
+    needs: [build]
     steps:
       - name: Run unit tests
         run: |
@@ -42,7 +42,7 @@ jobs:
 
   integration_tests:
     runs-on: ubuntu-latest
-    needs: [build, lint]
+    needs: [build]
     steps:
       - name: Run integration tests
         run: |
