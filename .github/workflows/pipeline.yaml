@@ -28,7 +28,7 @@ jobs:
           python-version: "3.13"
           cache: "poetry"
       - run: |
-          pipx install poetry --upgrade poetry
+          pipx install poetry
           poetry install -r poetry.lock
 
   lint:
