@@ -17,6 +17,6 @@ def test_list_users_invalid_search(client):
 
     assert response.status_code == HTTPStatus.NOT_FOUND
     assert response.json() == {
-        'detail': 'There is nothing to see here. Or are you looking for '
+        'detail': 'There is nothing to see here. Or are you searching for '
         'someone from the Void Century?'
     }
