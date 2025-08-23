@@ -20,13 +20,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+          cache: "poetry"
 
       - name: Install dependencies
         run: |
           pipx install poetry --upgrade poetry
           poetry install -r poetry.lock
-        with:
-          cache: "poetry"
 
       - name: Lint with ruff
         run: |
