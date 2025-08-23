@@ -13,11 +13,10 @@ def test_list_specific_user(client, test_user):
 
 
 def test_list_users_invalid_search(client):
-    response = client.get('/users/invalid')
+    response = client.get(f'/users/{0}')
 
-    assert response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
+    assert response.status_code == HTTPStatus.NOT_FOUND
     assert response.json() == {
-        'detail':
-        'There is nothing to see here. Or are you looking for '
+        'detail': 'There is nothing to see here. Or are you looking for '
         'someone from the Void Century?'
     }

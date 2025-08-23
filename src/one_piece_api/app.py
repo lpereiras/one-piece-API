@@ -9,7 +9,10 @@ from one_piece_api.models.user_model import User
 from one_piece_api.schemas.API_version_schema import Version
 from one_piece_api.schemas.user_schema import UserCreated, UserList, UserPublic, UserSchema
 
-app = FastAPI(version='v0.0.1')
+app = FastAPI(
+    version='v0.0.2',
+    title='One Piece API'
+    )
 
 
 # Retorna a versão atual da API
@@ -52,34 +55,45 @@ def create_user(user: UserSchema, session: Session = Depends(get_session)):
 @app.get('/users/', status_code=200, response_model=UserList)
 def list_users(
     session: Session = Depends(get_session),
+    skip: int = 0,
     limit: int = 10,
-    offset: int = 0,
 ):
-    db_users = session.scalars(select(User).limit(limit).offset(offset))
-
-    if not db_users:
-        raise HTTPException(
-            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-            detail='There is nothing to see here. Or are you looking for '
-            'someone from the Void Century?',
-        )
-    else:
-        return {'users': db_users}
+    db_users = session.scalars(select(User).limit(limit).offset(skip)).all()
+    return {'users': db_users}
 
 
 # Realiza uma busca por um usuário específico baseado em seu {user_id}
 @app.get('/users/{user_id}', status_code=200, response_model=UserPublic)
 def list_specific_user(
-    user_id,
+    user_id: int,
     session: Session = Depends(get_session),
 ):
     db_user = session.scalar(select(User).where(User.id == user_id))
 
     if not db_user:
         raise HTTPException(
-            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+            status_code=HTTPStatus.NOT_FOUND,
             detail='There is nothing to see here. Or are you looking for '
             'someone from the Void Century?',
         )
     else:
         return db_user
+
+
+# Realiza exclusão de um usuário específico baseado em seu {user_id}
+@app.delete('/users/{user_id}', status_code=200)
+def delete_user(
+    user_id: int,
+    session: Session = Depends(get_session),
+):
+    db_user = session.scalar(select(User).where(User.id == user_id))
+
+    if not db_user:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail='The one that you chasing is no longer between us.',
+        )
+    else:
+        session.delete(db_user)
+        session.commit()
+    return {'message': "I hope you're happy with the bounty. "}
