@@ -1,7 +1,7 @@
 name: OPA Pipeline
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -65,8 +65,8 @@ jobs:
           python-version: "3.13"
           cache: "poetry"
 
-      - name: Run integration tests
-        run: poetry run pytest tests/integration -s -x
+      - name: Run unit tests
+        run: poetry run pytest tests/unit -s -v
 
   integration_tests:
     runs-on: ubuntu-latest
@@ -93,4 +93,4 @@ jobs:
           cache: "poetry"
 
       - name: Run integration tests
-        run: poetry run pytest tests/integration -s -x
+        run: poetry run pytest tests/integration -s -v
