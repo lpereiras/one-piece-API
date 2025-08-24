@@ -69,6 +69,8 @@ jobs:
   integration_tests:
     runs-on: ubuntu-latest
     needs: [setup, lint]
+    env:
+      database_url: ${{ secrets.DATABASE_URL }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
