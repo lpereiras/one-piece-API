@@ -4,8 +4,8 @@ from sqlalchemy import StaticPool, create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
+from database import get_session
 from one_piece_api.app import app
-from one_piece_api.database import get_session
 from one_piece_api.models.user_model import User, table_registry
 
 

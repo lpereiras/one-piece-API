@@ -4,10 +4,11 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from one_piece_api.database import get_session
+from database import get_session
 from one_piece_api.models.user_model import User
 from one_piece_api.schemas.API_version_schema import Version
 from one_piece_api.schemas.user_schema import UserCreated, UserList, UserPublic, UserSchema
+from security import get_password_hash
 
 app = FastAPI(version='v0.0.2', title='One Piece API')
 
@@ -39,7 +40,11 @@ def create_user(user: UserSchema, session: Session = Depends(get_session)):
                 status_code=HTTPStatus.CONFLICT,
                 detail='This email is already taken.',
             )
-    db_user = User(username=user.username, email=user.email, password=user.password)
+    db_user = User(
+        username=user.username,
+        email=user.email,
+        password=get_password_hash(user.password)
+    )
 
     session.add(db_user)
     session.commit()
