@@ -1,0 +1,48 @@
+from http import HTTPStatus
+
+from jwt import decode
+
+from security import get_access_token
+from settings import Settings
+
+
+def test_get_access_token_with_success(client, test_user):
+    response = client.post(
+        '/token', data={'username': test_user.username, 'password': test_user.clean_password}
+    )
+    access_token = response.json()
+
+    assert response.status_code == HTTPStatus.OK
+    assert access_token['token_type'] == 'Bearer'
+    assert 'access_token' in access_token
+
+
+def test_get_access_token_add_expire():
+    data = {'sub': 'username.test'}
+    token = get_access_token(data)
+
+    result = decode(token, key=Settings().SECRET_KEY, algorithms=Settings().ALGORITHM)
+
+    assert result['exp']
+
+
+def test_get_access_token_with_invalid_username(client, test_user):
+    response = client.post(
+        '/token', data={'username': 'username_invalid', 'password': test_user.clean_password}
+    )
+
+    invalid_access = response.json()
+
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
+    assert invalid_access['detail'] == 'Invalid username or password'
+
+
+def test_get_access_token_with_invalid_password(client, test_user):
+    response = client.post(
+        '/token', data={'username': test_user.username, 'password': 'password_invalid'}
+    )
+
+    invalid_access = response.json()
+
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
+    assert invalid_access['detail'] == 'Invalid username or password'
