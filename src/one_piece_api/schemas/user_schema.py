@@ -5,7 +5,6 @@ class UserSchema(BaseModel):
     username: str
     email: EmailStr
     password: str
-    model_config = ConfigDict(from_attributes=True)
 
 
 class UserCreated(BaseModel):

@@ -1,13 +1,16 @@
 from http import HTTPStatus
 
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from one_piece_api.database import get_session
+from database import get_session
 from one_piece_api.models.user_model import User
 from one_piece_api.schemas.API_version_schema import Version
+from one_piece_api.schemas.login_schema import GetToken
 from one_piece_api.schemas.user_schema import UserCreated, UserList, UserPublic, UserSchema
+from security import get_access_token, get_password_hash, verify_password
 
 app = FastAPI(version='v0.0.2', title='One Piece API')
 
@@ -39,7 +42,9 @@ def create_user(user: UserSchema, session: Session = Depends(get_session)):
                 status_code=HTTPStatus.CONFLICT,
                 detail='This email is already taken.',
             )
-    db_user = User(username=user.username, email=user.email, password=user.password)
+    db_user = User(
+        username=user.username, email=user.email, password=get_password_hash(user.password)
+    )
 
     session.add(db_user)
     session.commit()
@@ -94,3 +99,25 @@ def delete_user(
         session.delete(db_user)
         session.commit()
     return {'message': "I hope you're satisfied with the bounty."}
+
+
+@app.post('/token', status_code=200, response_model=GetToken)
+def get_token(
+    form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)
+):
+    user = session.scalar(select(User).where(User.username == form_data.username))
+
+    if not user:
+        raise HTTPException(
+            status_code=HTTPStatus.UNAUTHORIZED,
+            detail='Invalid username or password',
+        )
+
+    elif not verify_password(form_data.password, user.password):
+        raise HTTPException(
+            status_code=HTTPStatus.UNAUTHORIZED,
+            detail='Invalid username or password',
+        )
+
+    access_token = get_access_token(data={'sub': user.username})
+    return {'access_token': access_token, 'token_type': 'Bearer'}

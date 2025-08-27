@@ -3,7 +3,7 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from src.one_piece_api.settings import Settings
+from settings import Settings
 from src.one_piece_api.models.user_model import table_registry
 
 from alembic import context

@@ -4,9 +4,10 @@ from sqlalchemy import StaticPool, create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
+from database import get_session
 from one_piece_api.app import app
-from one_piece_api.database import get_session
 from one_piece_api.models.user_model import User, table_registry
+from security import get_password_hash
 
 
 @pytest.fixture
@@ -38,14 +39,17 @@ def session():
 
 @pytest.fixture
 def test_user(session):
+    clean_pwd = 'teste_password.12345'
+
     test_user = User(
         username='teste_username field',
         email='teste_email.field@com.br',
-        password='teste_password',
+        password=get_password_hash(clean_pwd),
     )
 
     session.add(test_user)
     session.commit()
     session.refresh(test_user)
 
+    test_user.clean_password = clean_pwd
     return test_user
