@@ -46,6 +46,9 @@ jobs:
     needs: [setup, lint]
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      ALGORITHM: ${{ secrets.ALGORITHM }}
+      SECRET_KEY: ${{secrets.SECRET_KEY}}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${{secrets.ACCESS_TOKEN_EXPIRE_MINUTES}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -73,6 +76,9 @@ jobs:
     needs: [setup, lint]
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      ALGORITHM: ${{ secrets.ALGORITHM }}
+      SECRET_KEY: ${{secrets.SECRET_KEY}}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${{secrets.ACCESS_TOKEN_EXPIRE_MINUTES}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
