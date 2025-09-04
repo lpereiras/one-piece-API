@@ -39,7 +39,7 @@ jobs:
 
   unit_tests:
     runs-on: ubuntu-latest
-    needs: [setup, lint]
+    needs: [setup-lint]
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       ALGORITHM: ${{ secrets.ALGORITHM }}
@@ -69,7 +69,7 @@ jobs:
 
   integration_tests:
     runs-on: ubuntu-latest
-    needs: [setup, lint]
+    needs: [setup-lint]
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       ALGORITHM: ${{ secrets.ALGORITHM }}
