@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  setup:
+  setup-lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,10 +31,6 @@ jobs:
           python-version: "3.13"
           cache: "poetry"
 
-  lint:
-    runs-on: ubuntu-latest
-    needs: [setup]
-    steps:
       - name: Lint with ruff
         uses: astral-sh/ruff-action@v3
       - run: |
@@ -43,7 +39,7 @@ jobs:
 
   unit_tests:
     runs-on: ubuntu-latest
-    needs: [setup, lint]
+    needs: [setup-lint]
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       ALGORITHM: ${{ secrets.ALGORITHM }}
@@ -73,7 +69,7 @@ jobs:
 
   integration_tests:
     runs-on: ubuntu-latest
-    needs: [setup, lint]
+    needs: [setup-lint]
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       ALGORITHM: ${{ secrets.ALGORITHM }}

@@ -10,7 +10,7 @@ from one_piece_api.models.user_model import User
 from one_piece_api.schemas.API_version_schema import Version
 from one_piece_api.schemas.login_schema import GetToken
 from one_piece_api.schemas.user_schema import UserCreated, UserList, UserPublic, UserSchema
-from security import get_access_token, get_password_hash, verify_password
+from security import get_access_token, get_current_user, get_password_hash, verify_password
 
 app = FastAPI(version='v0.0.2', title='One Piece API')
 
@@ -59,6 +59,7 @@ def list_users(
     session: Session = Depends(get_session),
     skip: int = 0,
     limit: int = 10,
+    current_user=Depends(get_current_user),
 ):
     db_users = session.scalars(select(User).limit(limit).offset(skip)).all()
     return {'users': db_users}
@@ -85,39 +86,35 @@ def list_specific_user(
 # Realiza exclusão de um usuário específico baseado em seu {user_id}
 @app.delete('/users/{user_id}', status_code=200)
 def delete_user(
-    user_id: int,
-    session: Session = Depends(get_session),
+    user_id: int, session: Session = Depends(get_session), current_user=Depends(get_current_user)
 ):
-    db_user = session.scalar(select(User).where(User.id == user_id))
-
-    if not db_user:
+    if current_user.id != user_id:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND,
-            detail='The one you are chasing is no longer among us.',
+            status_code=HTTPStatus.FORBIDDEN,
+            detail="The gossips says that only Morgans manipulate's data like that.",
         )
     else:
-        session.delete(db_user)
+        session.delete(current_user)
         session.commit()
-    return {'message': "I hope you're satisfied with the bounty."}
+    return {'message': 'Vanished like informations about the Void Century.'}
 
 
-@app.post('/token', status_code=200, response_model=GetToken)
+# Verifica se o usuário já existe na base de dados, e retorna token de acesso se for o caso
+@app.post('/get-token', status_code=200, response_model=GetToken)
 def get_token(
     form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)
 ):
     user = session.scalar(select(User).where(User.username == form_data.username))
+    invalid_access = HTTPException(
+        status_code=HTTPStatus.UNAUTHORIZED,
+        detail='Invalid username or password',
+    )
 
     if not user:
-        raise HTTPException(
-            status_code=HTTPStatus.UNAUTHORIZED,
-            detail='Invalid username or password',
-        )
+        raise invalid_access
 
     elif not verify_password(form_data.password, user.password):
-        raise HTTPException(
-            status_code=HTTPStatus.UNAUTHORIZED,
-            detail='Invalid username or password',
-        )
+        raise invalid_access
 
-    access_token = get_access_token(data={'sub': user.username})
+    access_token = get_access_token(payload_data={'sub': user.username})
     return {'access_token': access_token, 'token_type': 'Bearer'}
