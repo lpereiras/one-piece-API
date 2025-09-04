@@ -90,18 +90,17 @@ def delete_user(
 ):
     if current_user.id != user_id:
         raise HTTPException(
-            status_code=HTTPStatus.UNAUTHORIZED,
-            detail="Are you trying to manipulate data that doesn't belong to your concern? "
-            'Morgans will know that',
+            status_code=HTTPStatus.FORBIDDEN,
+            detail="The gossips says that only Morgans manipulate's data like that.",
         )
     else:
         session.delete(current_user)
         session.commit()
-    return {'message': "I hope you're satisfied with the bounty."}
+    return {'message': 'Vanished like informations about the Void Century.'}
 
 
 # Verifica se o usuário já existe na base de dados, e retorna token de acesso se for o caso
-@app.post('/token', status_code=200, response_model=GetToken)
+@app.post('/get-token', status_code=200, response_model=GetToken)
 def get_token(
     form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)
 ):
@@ -117,5 +116,5 @@ def get_token(
     elif not verify_password(form_data.password, user.password):
         raise invalid_access
 
-    access_token = get_access_token(data={'sub': user.username})
+    access_token = get_access_token(payload_data={'sub': user.username})
     return {'access_token': access_token, 'token_type': 'Bearer'}

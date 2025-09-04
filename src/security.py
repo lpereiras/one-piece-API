@@ -4,7 +4,7 @@ from zoneinfo import ZoneInfo
 
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from jwt import PyJWTError, decode, encode
+from jwt import DecodeError, decode, encode
 from pwdlib import PasswordHash
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -28,8 +28,8 @@ def verify_password(plain_password: str, hashed_password: str):
 
 
 # Gera um token de acesso para um usuário autenticado com duração dinâmica
-def get_access_token(data: dict):
-    to_encode = data.copy()
+def get_access_token(payload_data: dict):
+    to_encode = payload_data.copy()
 
     expire = datetime.now(tz=ZoneInfo('UTC')) + timedelta(
         minutes=Settings().ACCESS_TOKEN_EXPIRE_MINUTES
@@ -43,16 +43,16 @@ def get_access_token(data: dict):
 def get_current_user(session: Session = Depends(get_session), token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=HTTPStatus.UNAUTHORIZED,
-        detail="Can't find anything about you in WG data",
+        detail="Can't find anything about you in WG files",
         headers={'WWW-Authenticate': 'Bearer'},
     )
     try:
-        payload = decode(token, key=Settings().SECRET_KEY, algorithms=[Settings().ALGORITHM])
-
+        payload = decode(token, Settings().SECRET_KEY, algorithms=[Settings().ALGORITHM])
         username = payload.get('sub')
+
         if not username:
             raise credentials_exception
-    except PyJWTError:
+    except DecodeError:
         raise credentials_exception
 
     db_user = session.scalar(select(User).where(User.username == username))

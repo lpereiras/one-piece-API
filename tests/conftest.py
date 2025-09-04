@@ -39,17 +39,26 @@ def session():
 
 @pytest.fixture
 def test_user(session):
-    clean_pwd = 'teste_password.12345'
+    pwd = 'teste_password.12345'
 
     test_user = User(
         username='teste_username field',
         email='teste_email.field@com.br',
-        password=get_password_hash(clean_pwd),
+        password=get_password_hash(pwd),
     )
 
     session.add(test_user)
     session.commit()
     session.refresh(test_user)
 
-    test_user.clean_password = clean_pwd
+    test_user.clean_password = pwd
     return test_user
+
+
+@pytest.fixture
+def generate_test_token(client, test_user):
+    response = client.post(
+        '/get-token',
+        data={'username': test_user.username, 'password': test_user.clean_password},
+    )
+    return response.json()['access_token']
