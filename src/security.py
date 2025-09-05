@@ -14,20 +14,17 @@ from one_piece_api.models.user_model import User
 from settings import Settings
 
 pwd_context = PasswordHash.recommended()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/token')
 
 
-# Realiza o hash da senha passada para salvar a informação no DB de forma mais segura
 def get_password_hash(password: str):
     return pwd_context.hash(password)
 
 
-# Realiza a verificação de que a senha informada é equivalente ao hash salvo
 def verify_password(plain_password: str, hashed_password: str):
     return pwd_context.verify(plain_password, hashed_password)
 
 
-# Gera um token de acesso para um usuário autenticado com duração dinâmica
 def get_access_token(payload_data: dict):
     to_encode = payload_data.copy()
 
