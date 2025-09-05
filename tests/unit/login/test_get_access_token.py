@@ -56,4 +56,7 @@ def test_invalid_jwt(client, test_user):
     )
 
     assert response.status_code == HTTPStatus.UNAUTHORIZED
-    assert response.json() == {'detail': "Can't find anything about you in WG files"}
+    assert response.json() == {
+        'detail': "Gossips says that only Morgans manipulate's data with that "
+        'freedom of not getting catched.'
+    }

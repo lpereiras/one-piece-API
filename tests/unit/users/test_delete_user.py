@@ -19,5 +19,6 @@ def test_delete_user_not_found(client, generate_test_token):
 
     assert response.status_code == HTTPStatus.FORBIDDEN
     assert response.json() == {
-        'detail': "The gossips says that only Morgans manipulate's data like that."
+        'detail': "Gossips says that only Morgans manipulate's data with that "
+        'freedom of not getting catched.'
     }

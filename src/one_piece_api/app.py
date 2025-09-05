@@ -91,7 +91,8 @@ def delete_user(
     if current_user.id != user_id:
         raise HTTPException(
             status_code=HTTPStatus.FORBIDDEN,
-            detail="The gossips says that only Morgans manipulate's data like that.",
+            detail="Gossips says that only Morgans manipulate's data with that "
+            'freedom of not getting catched.',
         )
     else:
         session.delete(current_user)
