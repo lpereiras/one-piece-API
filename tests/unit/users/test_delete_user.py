@@ -11,9 +11,9 @@ def test_delete_user(client, test_user, generate_test_token):
     assert response.json() == {'message': 'Vanished like informations about the Void Century.'}
 
 
-def test_delete_user_not_found(client, generate_test_token):
+def test_delete_wrong_user(client, test_user, generate_test_token):
     response = client.delete(
-        f'/users/{999}',
+        f'/users/{test_user.id + 1}',
         headers={'Authorization': f'Bearer {generate_test_token}'},
     )
 

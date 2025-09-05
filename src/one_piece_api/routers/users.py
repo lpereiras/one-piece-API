@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
@@ -10,6 +11,7 @@ from one_piece_api.schemas.user_schema import UserCreated, UserList, UserPublic,
 from security import get_current_user, get_password_hash
 
 router = APIRouter(prefix='/users', tags=['Users'])
+T_Session = Annotated[Session, Depends(get_session)]
 
 
 @router.post(
@@ -17,7 +19,7 @@ router = APIRouter(prefix='/users', tags=['Users'])
     status_code=201,
     response_model=UserCreated,
 )
-def create_user(user: UserSchema, session: Session = Depends(get_session)):
+def create_user(user: UserSchema, session: T_Session):
     db_user = session.scalar(
         select(User).where((User.username == user.username) | (User.email == user.email))
     )
@@ -46,7 +48,7 @@ def create_user(user: UserSchema, session: Session = Depends(get_session)):
 @router.get('/{user_id}', status_code=200, response_model=UserPublic)
 def list_specific_user(
     user_id: int,
-    session: Session = Depends(get_session),
+    session: T_Session,
 ):
     db_user = session.scalar(select(User).where(User.id == user_id))
 
@@ -62,7 +64,7 @@ def list_specific_user(
 
 @router.get('/', status_code=200, response_model=UserList)
 def list_users(
-    session: Session = Depends(get_session),
+    session: T_Session,
     skip: int = 0,
     limit: int = 10,
     current_user=Depends(get_current_user),
@@ -72,9 +74,7 @@ def list_users(
 
 
 @router.delete('/{user_id}', status_code=200)
-def delete_user(
-    user_id: int, session: Session = Depends(get_session), current_user=Depends(get_current_user)
-):
+def delete_user(user_id: int, session: T_Session, current_user=Depends(get_current_user)):
     if current_user.id != user_id:
         raise HTTPException(
             status_code=HTTPStatus.FORBIDDEN,
