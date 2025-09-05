@@ -8,7 +8,7 @@ from settings import Settings
 
 def test_get_access_token_with_success(client, test_user):
     response = client.post(
-        '/get-token', data={'username': test_user.username, 'password': test_user.clean_password}
+        '/auth/token', data={'username': test_user.username, 'password': test_user.clean_password}
     )
     access_token = response.json()
 
@@ -29,7 +29,7 @@ def test_get_access_token_add_expire():
 
 def test_get_access_token_with_invalid_username(client, test_user):
     response = client.post(
-        '/get-token', data={'username': 'username_invalid', 'password': test_user.clean_password}
+        '/auth/token', data={'username': 'username_invalid', 'password': test_user.clean_password}
     )
 
     invalid_access = response.json()
@@ -40,7 +40,7 @@ def test_get_access_token_with_invalid_username(client, test_user):
 
 def test_get_access_token_with_invalid_password(client, test_user):
     response = client.post(
-        '/get-token', data={'username': test_user.username, 'password': 'password_invalid'}
+        '/auth/token', data={'username': test_user.username, 'password': 'password_invalid'}
     )
 
     invalid_access = response.json()
@@ -56,4 +56,7 @@ def test_invalid_jwt(client, test_user):
     )
 
     assert response.status_code == HTTPStatus.UNAUTHORIZED
-    assert response.json() == {'detail': "Can't find anything about you in WG files"}
+    assert response.json() == {
+        'detail': "Gossips says that only Morgans manipulate's data with that "
+        'freedom of not getting catched.'
+    }

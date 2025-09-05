@@ -58,7 +58,7 @@ def test_user(session):
 @pytest.fixture
 def generate_test_token(client, test_user):
     response = client.post(
-        '/get-token',
+        '/auth/token',
         data={'username': test_user.username, 'password': test_user.clean_password},
     )
     return response.json()['access_token']

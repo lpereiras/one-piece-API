@@ -50,7 +50,7 @@ lint = 'ruff check'
 format = 'ruff format'
 coverage = 'coverage html'
 pre_test = 'task lint'
-test = 'pytest -x --cov=src -v'
+test = 'pytest --cov=src -s -v'
 post_test = 'coverage html'
 
 [build-system]
