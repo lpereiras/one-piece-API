@@ -5,6 +5,7 @@ from jwt import decode
 from security import get_access_token
 from settings import Settings
 
+
 def test_get_access_token_with_success(client, test_user):
     response = client.post(
         '/auth/token', data={'username': test_user.username, 'password': test_user.clean_password}
