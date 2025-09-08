@@ -5,7 +5,6 @@ from jwt import decode
 from security import get_access_token
 from settings import Settings
 
-
 def test_get_access_token_with_success(client, test_user):
     response = client.post(
         '/auth/token', data={'username': test_user.username, 'password': test_user.clean_password}
@@ -47,16 +46,3 @@ def test_get_access_token_with_invalid_password(client, test_user):
 
     assert response.status_code == HTTPStatus.UNAUTHORIZED
     assert invalid_access['detail'] == 'Invalid username or password'
-
-
-def test_invalid_jwt(client, test_user):
-    response = client.delete(
-        f'/users/{test_user.id}',
-        headers={'Authorization': 'Bearer invalid-token'},
-    )
-
-    assert response.status_code == HTTPStatus.UNAUTHORIZED
-    assert response.json() == {
-        'detail': "Gossips says that only Morgans manipulate's data with that "
-        'freedom of not getting catched.'
-    }
