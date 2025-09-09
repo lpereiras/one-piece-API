@@ -1,5 +1,6 @@
 from http import HTTPStatus
 
+from freezegun import freeze_time
 from jwt import decode
 
 from security import get_access_token
@@ -47,3 +48,19 @@ def test_get_access_token_with_invalid_password(client, test_user):
 
     assert response.status_code == HTTPStatus.UNAUTHORIZED
     assert invalid_access['detail'] == 'Invalid username or password'
+
+
+def test_token_when_expired(client, test_user):
+    with freeze_time('1998-11-26 12:00:00'):
+        response = client.post(
+            '/auth/token',
+            data={'username': test_user.username, 'password': test_user.clean_password},
+        )
+        access_token = response.json()['access_token']
+        print(access_token)
+    with freeze_time('1998-11-26 12:31:00'):
+        response = client.delete(
+            f'/users/{test_user.id}',
+            headers={'Authorization': f'Bearer {access_token}'},
+        )
+        assert response.status_code == HTTPStatus.UNAUTHORIZED
