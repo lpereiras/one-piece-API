@@ -40,8 +40,7 @@ def get_access_token(payload_data: dict):
 def get_current_user(session: Session = Depends(get_session), token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=HTTPStatus.UNAUTHORIZED,
-        detail="Gossips says that only Morgans manipulate's data with that "
-        'freedom of not getting catched.',
+        detail='Your time here has ended.',
         headers={'WWW-Authenticate': 'Bearer'},
     )
     try:
