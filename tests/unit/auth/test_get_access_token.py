@@ -58,9 +58,43 @@ def test_token_when_expired(client, test_user):
         )
         access_token = response.json()['access_token']
         print(access_token)
-    with freeze_time('1998-11-26 12:31:00'):
+    with freeze_time('1998-11-26 12:16:00'):
         response = client.delete(
             f'/users/{test_user.id}',
             headers={'Authorization': f'Bearer {access_token}'},
         )
         assert response.status_code == HTTPStatus.UNAUTHORIZED
+
+
+def test_refresh_token(client, generate_test_token):
+    response = client.post(
+        '/auth/refresh-token', headers={'Authorization': f'Bearer {generate_test_token}'}
+    )
+    payload_data = response.json()
+
+    assert response.status_code == HTTPStatus.OK
+    assert 'access_token' in payload_data
+    assert 'token_type' in payload_data
+    assert payload_data['token_type'] == 'Bearer'
+
+
+def test_token_expired_dont_refresh(client, test_user):
+    with freeze_time('1998-11-26 12:00:00'):
+        response = client.post(
+            '/auth/token',
+            data={'username': test_user.username, 'password': test_user.clean_password},
+        )
+
+        assert response.status_code == HTTPStatus.OK
+        token = response.json()['access_token']
+
+    with freeze_time('1998-11-26 12:16:00'):
+        response = client.post(
+            '/auth/refresh-token',
+            headers={'Authorization': f'Bearer {token}'},
+        )
+
+        assert response.status_code == HTTPStatus.UNAUTHORIZED
+        assert response.json() == {
+            'detail': 'Your time here has ended.',
+        }

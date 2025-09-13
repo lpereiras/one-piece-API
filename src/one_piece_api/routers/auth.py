@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from database import get_session
 from one_piece_api.models.user_model import User
 from one_piece_api.schemas.login_schema import GetToken
-from security import get_access_token, verify_password
+from security import get_access_token, get_current_user, verify_password
 
 router = APIRouter(prefix='/auth', tags=['Auth'])
 
@@ -31,3 +31,10 @@ def get_token(
 
     access_token = get_access_token(payload_data={'sub': user.username})
     return {'access_token': access_token, 'token_type': 'Bearer'}
+
+
+@router.post('/refresh-token', status_code=200, response_model=GetToken)
+def refresh_token(user: User = Depends(get_current_user)):
+    refreshed_token = get_access_token(payload_data={'sub': user.username})
+
+    return {'access_token': refreshed_token, 'token_type': 'Bearer'}
