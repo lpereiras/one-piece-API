@@ -1,4 +1,4 @@
-"""Create devil fruit table
+"""create Devil fruits table
 
 Revision ID: 4e51cc7af9aa
 Revises: a21bad468b4c

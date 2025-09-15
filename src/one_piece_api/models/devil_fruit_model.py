@@ -22,4 +22,9 @@ class Devil_fruit:
     description: Mapped[str]
     actual_user: Mapped[str] = mapped_column(nullable=True)
     type: Mapped[TypeEnumSchema]
+    # TODO: fruit_picture need to see how to handle images
     created_at: Mapped[datetime] = mapped_column(init=False, server_default=func.now())
+
+    # TODO: character_id: Mapped[str] = mapped_column(ForeignKey='')
+    # create the relationship between a character and his devil fruit
+    # if they eated some
