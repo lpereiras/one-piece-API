@@ -5,6 +5,7 @@ from sqlalchemy import pool
 
 from settings import Settings
 from src.one_piece_api.models.user_model import table_registry
+from src.one_piece_api.models.devil_fruit_model import table_registry
 
 from alembic import context
 
