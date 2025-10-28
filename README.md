@@ -83,28 +83,6 @@ poetry --version   # Should be 2.0 or higher
 
    - Swagger UI: `http://127.0.0.1:8000/docs`
 
-## 📚 API Endpoints
-
-### Authentication
-
-- `POST /auth/token`
-- `POST /auth/refresh-token`
-
-### Users
-
-- `POST /users/`
-- `GET /users/`
-- `GET /users/{user_id}`
-- `DELETE /users/{user_id}`
-
-### Devil Fruits
-
-:construction: **in progress** :construction:
-
-### Version
-
-- `GET /version`
-
 ## 🧪 Running Tests
 
 Run all tests with coverage:
@@ -130,12 +108,9 @@ poetry run task coverage
 
 ### Linting
 
-```bash
-poetry run task lint
-```
-
-### Formatting
+Check and fix code quality issues:
 
 ```bash
-poetry run task format
+poetry run task lint          # Check for linting errors
+poetry run task format        # Auto-fix linting errors
 ```
